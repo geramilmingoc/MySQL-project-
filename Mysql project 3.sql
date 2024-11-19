@@ -13,9 +13,9 @@ select count(*) as Passengers_survived
  FROM titanic
   where	Survived = 1;
 
--- find the averae age of passengers --
+-- find the average age of passengers --
 select avg(Age)
-FROM titanic;
+ FROM titanic;
 
 -- find number of passengers in each class --
 select Pclass,count(*) as "no. of passengers"
@@ -43,8 +43,8 @@ select Pclass , avg(Fare) as average_fare
 
  -- find the name of passenger/s with the highest fare -- 
   select name, Fare
-   from titanic
-    where Fare = (select max(fare) from titanic);
+    from titanic
+     where Fare = (select max(fare) from titanic);
   -- select max(fare) from titanic; --SUBQUERY ONLY	
   
  -- find the name of the passenger who had the  highest age among the survivors --
@@ -55,67 +55,65 @@ select name, age as 'oldest survivor'
 
 -- find the number of passengers who paid more than the average fare --
   
- select count(*) " number of passenger"
+ select count(*) " number of passengers"
   from titanic
      where Fare > (select avg(fare) from titanic);
  
  -- select Pclass, avg(fare) from titanic;SUBQUERY only
  
- -- find the name of the passenger who had the most parents or childre on board --
+ -- find the name of the passenger who had the most parents or children on board --
  select name, Parch
   from titanic
     where Parch = 6;
  -- select max(parch) from titanic; Subquery only
  
- -- find the number of male and female passengers who survive,order results by sex in ascending order --
+ -- find the number of male and female passengers who survive, order results by sex in ascending order --
  select sex, count(*) as survivors
    from titanic 
-	where Survived = 1
-     group by sex
-      order by sex asc;
+     where Survived = 1
+      group by sex
+       order by sex asc;
       
-      -- find the name,age  and fare of the oldest passenger who survived --
-      select name , age , fare
+      -- find the name, age,  and fare of the oldest passenger who survived --
+      select name, age, fare
         from titanic
-			where age = ( select max(age) from titanic where Survived = 1);
+	  where age = ( select max(age) from titanic where Survived = 1);
 -- select max(age) from titanic where Survived = 1;-- subquery only
    
--- find the name , age  of the youngest female passenger who survived from third class --
+-- find the name, age  of the youngest female passenger who survived from third class --
 
 select Name, age, Sex
  from titanic
-	where Pclass = 3 and age = (select min(age) from titanic  where Survived = 1 and Pclass = 3
-                                                    and sex = 'female') 
-						and Survived = 1 
-                           and sex = "female";
+   where Pclass = 3 and age = (select min(age) from titanic  where Survived = 1 and Pclass = 3
+                                 and sex = 'female') and Survived = 1  and sex = "female";
       
    -- select min(age) from titanic where Survived = 1 and Pclass = 3 and sex = "female";
    
    -- find the number of male and female passengers -- 
    select sex , count(*)
-   from titanic
-   group by sex;
-   -- by using CASE
+    from titanic
+     group by sex;
+        -- by using CASE
   select
    sum(case when sex = "male" then 1 else 0 end) as num_male,
    sum(case when sex  = "female" then 1 else 0 end) as num_female
    from titanic;
    
-   -- select all passengers who travelled in a cabin and not shared ny other passenger-- 
+   -- select all passengers who traveled in a cabin and not share by other passenger-- 
           -- using NOT IN and IN
    
    select *
-	from titanic
-     where cabin not in  (select cabin from titanic 
-                           group by cabin 
+     from titanic
+       where cabin not in  (select cabin from titanic 
+                              group by cabin 
                                having count(*) >1);
 select *
  from titanic
-	where cabin in  (select cabin from titanic 
+  where cabin in  (select cabin from titanic 
                            group by cabin 
-                               having count(*) = 1);
+                             having count(*) = 1);
                                                          
--- select cabin from titanic group by cabin having count(*) > 1 
+-- Select cabin from titanic group by cabin having count(*) > 1 
  --   select cabin from titanic group by cabin having count(*) = 1 
  
  
